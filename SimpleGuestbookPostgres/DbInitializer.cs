@@ -27,19 +27,5 @@ namespace SimpleGuestbookPostgres
                 var rowCount = conn.Execute(sql);
             }
         }
-
-        public string GetAllTables()
-        {
-            using (var conn = new NpgsqlConnection(_connectionString))
-            {
-                conn.Open();
-
-                var x = conn.Query<string>("SELECT table_schema || '.' || table_name FROM information_schema.tables");
-
-                var y = conn.Query("select column_name, data_type, character_maximum_length from INFORMATION_SCHEMA.COLUMNS where table_name = 'posts'");
-
-                return x.FirstOrDefault();
-            }
-        }
     }
 }
