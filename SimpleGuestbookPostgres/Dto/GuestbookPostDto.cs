@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 namespace SimpleGuestbookPostgres.Dto
 {
     [Table("public.posts")]
-    public class GuesbookPostDto
+    public class GuestbookPostDto
     {
-        public int id { get; set; }
+        //Weird postgres crap
+        public int Id { get; set; }
         public string Posttext { get; set; }
         public string Username { get; set; }
         public DateTime CreatedOn { get; set; }

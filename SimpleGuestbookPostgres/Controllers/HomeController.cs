@@ -29,7 +29,7 @@ namespace SimpleGuestbookPostgres.Controllers
             return View(model);
         }
 
-        public IActionResult AddPost(GuesbookPostDto post)
+        public IActionResult AddPost(GuestbookPostDto post)
         {
             post.CreatedOn = DateTime.UtcNow;
             _postsRepository.Add(post);

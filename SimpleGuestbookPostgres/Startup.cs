@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
+using Dapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -9,7 +11,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using SimpleGuestbookPostgres.Dto;
 using SimpleGuestbookPostgres.Repositories;
+using static Dapper.SqlMapper;
 
 namespace SimpleGuestbookPostgres
 {
@@ -30,8 +34,9 @@ namespace SimpleGuestbookPostgres
             services.AddSingleton<AppSettings>(sp => sp.GetRequiredService<IOptions<AppSettings>>().Value);
             services.AddSingleton<IPostsRepository, PostsRepository>();
 
+            SqlMapper.SetTypeMap(typeof(GuestbookPostDto), GetPostsTypeMapper());
+
             new DbInitializer("Server=127.0.0.1;Port=5432;Userid=root;Password=supersecretpw;Timeout=15;SslMode=Disable;Database=guestbookdb").Init();
-            new DbInitializer("Server=127.0.0.1;Port=5432;Userid=root;Password=supersecretpw;Timeout=15;SslMode=Disable;Database=guestbookdb").GetAllTables();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -60,6 +65,24 @@ namespace SimpleGuestbookPostgres
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+        }
+
+        private ITypeMap GetPostsTypeMapper()
+        {
+            var columnMap = new Dictionary<string, string>()
+            {
+                { "Id", "id" }
+            };
+
+            var columnMapper = new Func<Type, string, PropertyInfo>((type, columnName) =>
+            {
+                if (columnMap.ContainsKey(columnName))
+                    return type.GetProperty(columnMap[columnName]);
+
+                return type.GetProperty(columnName);
+            });
+
+            return new CustomPropertyTypeMap(typeof(GuestbookPostDto), (type, columnName) => columnMapper(type, columnName));
         }
     }
 }

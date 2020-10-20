@@ -8,7 +8,7 @@ namespace SimpleGuestbookPostgres.Repositories
 {
     public interface IPostsRepository
     {
-        List<GuesbookPostDto> GetAll();
-        void Add(GuesbookPostDto post);
+        List<GuestbookPostDto> GetAll();
+        void Add(GuestbookPostDto post);
     }
 }

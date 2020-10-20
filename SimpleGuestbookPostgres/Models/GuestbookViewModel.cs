@@ -8,6 +8,6 @@ namespace SimpleGuestbookPostgres.Models
 {
     public class GuestbookViewModel
     {
-        public List<GuesbookPostDto> AllPosts { get; set; }
+        public List<GuestbookPostDto> AllPosts { get; set; }
     }
 }
