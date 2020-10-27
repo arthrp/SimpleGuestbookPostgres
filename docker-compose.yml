@@ -1,6 +1,13 @@
 version: '3'
 
 services:
+  web:
+    build: .
+    ports:
+      - "8000:80"
+    depends_on:
+      - postgresdb
+
   postgresdb:
     image: postgres
     restart: always

@@ -36,7 +36,7 @@ namespace SimpleGuestbookPostgres
 
             SqlMapper.SetTypeMap(typeof(GuestbookPostDto), GetPostsTypeMapper());
 
-            new DbInitializer("Server=127.0.0.1;Port=5432;Userid=root;Password=supersecretpw;Timeout=15;SslMode=Disable;Database=guestbookdb").Init();
+            new DbInitializer("Server=postgresdb;Port=5432;Userid=root;Password=supersecretpw;Timeout=15;SslMode=Disable;Database=guestbookdb").Init();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
